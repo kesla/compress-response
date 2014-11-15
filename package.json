@@ -1,0 +1,29 @@
+{
+  "name": "compress-response",
+  "version": "0.0.0",
+  "description": "streaming http response compression thingy",
+  "main": "compress-response.js",
+  "scripts": {
+    "test": "tape test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kesla/compress-response"
+  },
+  "author": "David Björklund <david.bjorklund@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kesla/compress-response/issues"
+  },
+  "homepage": "https://github.com/kesla/compress-response",
+  "devDependencies": {
+    "request": "^2.48.0",
+    "response": "^0.14.0",
+    "tape": "^3.0.3"
+  },
+  "dependencies": {
+    "best-encoding": "^0.1.1",
+    "compressible": "^2.0.1",
+    "through2": "^0.6.3"
+  }
+}
