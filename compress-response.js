@@ -3,6 +3,7 @@ var zlib = require('zlib')
   , bestEncoding = require('best-encoding')
   , compressible = require('compressible')
   , through = require('through2')
+  , writeonly = require('write-only-stream')
 
   , handleFirst = function (req, res, stream) {
       var type = res.getHeader('content-type')
@@ -22,7 +23,7 @@ var zlib = require('zlib')
             callback(null, chunk)
           })
 
-      return stream
+      return writeonly(stream)
     }
 
 module.exports = compressResponse

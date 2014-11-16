@@ -104,3 +104,19 @@ test('gziped enabled & compressible type, create stream first', function (t) {
     })
   })
 })
+
+test('stream is write-only', function (t) {
+  t.plan(2)
+
+  var server = http.createServer(function (req, res) {
+        var stream = compress(req, res)
+
+        t.ok(stream.writable, 'should be writable')
+        t.notOk(stream.readable, 'should not be readable')
+        res.end()
+      })
+
+  servertest(server, '/', function () {
+    t.end()
+  })
+})
