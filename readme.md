@@ -36,7 +36,7 @@ var http = require('http')
 
 require('servertest')(server, '/', { headers: { 'accept-encoding': 'gzip' } }, function (err, res) {
   console.log('body === "YEAH!"?')
-  console.log(res.body.toString() !== 'YEAH!')
+  console.log(res.body.toString() === 'YEAH!')
   console.log('and these are the headers')
   console.log(res.headers)
 })
@@ -46,11 +46,11 @@ require('servertest')(server, '/', { headers: { 'accept-encoding': 'gzip' } }, f
 
 ```
 body === "YEAH!"?
-true
+false
 and these are the headers
 { 'content-type': 'text/plan',
   'content-encoding': 'gzip',
-  date: 'Sun, 16 Nov 2014 01:53:17 GMT',
+  date: 'Sun, 16 Nov 2014 01:54:42 GMT',
   connection: 'close',
   'transfer-encoding': 'chunked' }
 ```
