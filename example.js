@@ -1,22 +1,22 @@
 var http = require('http')
 
   , request = require('request')
-  , response = require('response')
 
   , compress = require('./compress-response')
 
-http.createServer(function (req, res) {
-  res.setHeader('content-type', 'application/json')
+  , server = http.createServer(function (req, res) {
+      res.setHeader('content-type', 'application/json')
 
-  var stream = compress(req, res)
-  // stream will be gzip-stream if request has correct accept-encoding
-  // and content-type in res is compressible
+      var stream = compress(req, res)
+      // stream will be gzip-stream if request has correct accept-encoding
+      // and content-type in res is compressible
 
-  stream.write(JSON.stringify({ hello: 'world', foo: { bar: 'bas' } }))
-  stream.end()
+      stream.write(JSON.stringify({ hello: 'world', foo: { bar: 'bas' } }))
+      stream.end()
 
-  stream.pipe(res)
-}).listen(0, function () {
+    })
+
+server.listen(0, function () {
   var port = this.address().port
     , url = 'http://localhost:' + port
 
@@ -25,5 +25,6 @@ http.createServer(function (req, res) {
     console.log(body)
     console.log('these are the headers')
     console.log(res.headers)
+    server.close()
   })
 })

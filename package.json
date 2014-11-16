@@ -18,7 +18,7 @@
   "homepage": "https://github.com/kesla/compress-response",
   "devDependencies": {
     "request": "^2.48.0",
-    "response": "^0.14.0",
+    "servertest": "^1.1.1",
     "tape": "^3.0.3"
   },
   "dependencies": {
