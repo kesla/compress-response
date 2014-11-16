@@ -20,8 +20,48 @@ test('basic', function (t) {
   })
 })
 
-test('gziped', function (t) {
+test('gziped enabled & no type', function (t) {
   var server = http.createServer(function (req, res) {
+        var stream = compress(req, res)
+        stream.write('Hello, world!')
+        stream.end()
+      })
+    , options = { headers: {'accept-encoding': 'gzip'} }
+
+  servertest(server, '/', options, function (err, res) {
+    if (err) return t.end(err)
+
+    t.notEqual(res.headers['content-encoding'], 'gzip')
+
+    t.deepEqual(res.body.toString(), 'Hello, world!')
+    t.end()
+  })
+})
+
+test('gziped enabled & none-compressible type', function (t) {
+  var server = http.createServer(function (req, res) {
+        res.setHeader('content-type', 'image/jpeg')
+
+        var stream = compress(req, res)
+        stream.write('Hello, world!')
+        stream.end()
+      })
+    , options = { headers: {'accept-encoding': 'gzip'} }
+
+  servertest(server, '/', options, function (err, res) {
+    if (err) return t.end(err)
+
+    t.notEqual(res.headers['content-encoding'], 'gzip')
+
+    t.deepEqual(res.body.toString(), 'Hello, world!')
+    t.end()
+  })
+})
+
+test('gziped enabled & compressible type', function (t) {
+  var server = http.createServer(function (req, res) {
+        res.setHeader('content-type', 'text/plain')
+
         var stream = compress(req, res)
         stream.write(JSON.stringify('Hello, world!'))
         stream.end()
