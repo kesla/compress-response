@@ -1,6 +1,6 @@
 {
   "name": "compress-response",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "streaming http response compression thingy",
   "main": "compress-response.js",
   "scripts": {
