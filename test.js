@@ -80,3 +80,27 @@ test('gziped enabled & compressible type', function (t) {
     })
   })
 })
+
+test('gziped enabled & compressible type, create stream first', function (t) {
+  var server = http.createServer(function (req, res) {
+        var stream = compress(req, res)
+
+        res.setHeader('content-type', 'text/plain')
+
+        stream.write(JSON.stringify('Hello, world!'))
+        stream.end()
+      })
+    , options = { headers: {'accept-encoding': 'gzip'} }
+
+  servertest(server, '/', options, function (err, res) {
+    if (err) return t.end(err)
+
+    t.equal(res.headers['content-encoding'], 'gzip')
+    zlib.gunzip(res.body, function (err, result) {
+      if (err) return t.end(err)
+
+      t.deepEqual(JSON.parse(result.toString()), 'Hello, world!')
+      t.end()
+    })
+  })
+})

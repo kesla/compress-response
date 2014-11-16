@@ -4,18 +4,23 @@ var zlib = require('zlib')
   , compressible = require('compressible')
   , through = require('through2')
 
-  , compressResponse = function (req, res) {
-      var stream
-        , type = res.getHeader('content-type')
-
+  , handleFirst = function (req, res, stream) {
+      var type = res.getHeader('content-type')
       if (bestEncoding(req) === 'gzip' && compressible(type)) {
         res.setHeader('content-encoding', 'gzip')
-        stream = zlib.createGzip()
+        stream.pipe(zlib.createGzip()).pipe(res)
       } else {
-        stream = through()
+        stream.pipe(res)
       }
+    }
 
-      stream.pipe(res)
+  , compressResponse = function (req, res) {
+      var first = true
+        , stream = through(function (chunk, _, callback) {
+            if (first) handleFirst(req, res, stream)
+            first = false
+            callback(null, chunk)
+          })
 
       return stream
     }
