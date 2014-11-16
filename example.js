@@ -16,8 +16,8 @@ var http = require('http')
     })
 
 require('servertest')(server, '/', { headers: { 'accept-encoding': 'gzip' } }, function (err, res) {
-  console.log('the body is gzip-data')
-  console.log(res.body.toString())
+  console.log('body === "YEAH!"?')
+  console.log(res.body.toString() !== 'YEAH!')
   console.log('and these are the headers')
   console.log(res.headers)
 })
