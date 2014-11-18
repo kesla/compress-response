@@ -19,7 +19,7 @@ npm install compress-response
 ```javascript
 var http = require('http')
 
-  , compress = require('./compress-response')
+  , compress = require('compress-response')
 
   , server = http.createServer(function (req, res) {
       res.setHeader('content-type', 'text/plan')
