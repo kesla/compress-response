@@ -2,10 +2,10 @@ var zlib = require('zlib')
 
   , bestEncoding = require('best-encoding')
   , compressible = require('compressible')
-  , through = require('through2')
+  , headStream = require('head-stream')
   , writeonly = require('write-only-stream')
 
-  , handleFirst = function (req, res, stream) {
+  , decideEncoding = function (req, res, stream) {
       var type = res.getHeader('content-type')
       if (bestEncoding(req) === 'gzip' && compressible(type)) {
         res.setHeader('content-encoding', 'gzip')
@@ -16,12 +16,11 @@ var zlib = require('zlib')
     }
 
   , compressResponse = function (req, res) {
-      var first = true
-        , stream = through(function (chunk, _, callback) {
-            if (first) handleFirst(req, res, stream)
-            first = false
-            callback(null, chunk)
-          })
+      var onHead = function (chunk, callback) {
+            decideEncoding(req, res, stream)
+            callback()
+          }
+        , stream = headStream(onHead, { includeHead: true })
 
       return writeonly(stream)
     }
